@@ -33,7 +33,7 @@ show me the list of the processes in memory image x, or show me all the external
 ### Prerequisites
 
 * Python 3.7+ installed on your system
-* Volatility 3 installed (see [Volatility 3 Installation Guide](https://github.com/volatilityfoundation/volatility3?tab=readme-ov-file#installing)) and added to your env path variable
+* Volatility 3 binary installed (see [Volatility 3 Installation Guide](https://github.com/volatilityfoundation/volatility3?tab=readme-ov-file#installing)) and added to your env path called **VOLATILITY_BIN**
 
 ### Installation
 
@@ -53,7 +53,7 @@ show me the list of the processes in memory image x, or show me all the external
 3. Start the FastAPI server to expose Volatility 3 APIs:
 
     ```
-    uvicorn volatility_fastapi_server:app --port 8000 
+    uvicorn volatility_fastapi_server:app 
     ```
 4. Install Claude Desktop (see [Claude Desktop](https://claude.ai/download)
 5. To configure Claude Desktop as a volatility MCP client, navigate to Claude → Settings → Developer → Edit Config, locate the claude_desktop_config.json file, and insert the following configuration details
