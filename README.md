@@ -1,5 +1,8 @@
 ![](https://img.shields.io/badge/License-Apache%202.0-blue?style=plastic&logo=adobefonts)
 # Volatility MCP
+![image](https://github.com/user-attachments/assets/83cd61f9-1036-460a-b1e4-d281dd61eadf)
+
+
 
 ## Overview
 
