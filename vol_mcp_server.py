@@ -15,7 +15,7 @@ from mcp.server.fastmcp import FastMCP
 import logging
 import argparse
 from typing import List, Optional
-from http_client import HttpClient  # Updated import to use HttpClient
+from http_client import HttpClient  
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
