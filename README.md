@@ -1,19 +1,15 @@
 ![](https://img.shields.io/badge/License-Apache%202.0-blue?style=plastic&logo=adobefonts)
-# Volatility MCP
-
 <p align="center">
 <img src="assets/logo.png" height="300">
 </p>
 <h1 align="center">
-
-
+Your AI Assistant in Memory Forensics
+</h1>
 
 ## Overview
-
 Volatility MCP is a project that integrates Volatility 3, a memory forensics framework, with a Python FastAPI backend. This setup allows memory image analysis via the Model Context Protocol (MCP). The FastAPI backend exposes Volatility 3 plugins as RESTful APIs, enabling seamless integration with a web front end for interactive memory forensics analysis. MCP clients like Claude Desktop or custom web applications can consume these APIs to leverage Volatility plugins such as `pslist` and `netscan`.
 
 ## Features
-
 * **Volatility 3 Integration:** Leverages the Volatility 3 framework for memory image analysis.
 * **FastAPI Backend:** Provides RESTful APIs to interact with Volatility plugins.
 * **Web Front End Support (future feature):** Designed to connect with a web-based front end for interactive analysis.
