@@ -1,4 +1,5 @@
 requests>=2.31.0
 fastapi>=0.104.0
-mcp-server>=0.1.0
+mcp[cli]>=0.1.0  # Required for CLI functionality
+fastmcp >=0.1.0  # Required for FastAPI functionality
 uvicorn>=0.24.0  # Required for running FastAPI server
