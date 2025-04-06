@@ -1,8 +1,25 @@
-from fastapi import FastAPI, HTTPException
+"""
+Volatility Memory Analysis FastAPI Server
+This module implements a FastAPI server that provides RESTful endpoints for memory analysis
+using Volatility3 framework. It includes a plugin system for different types of memory analysis
+and supports Windows memory dumps.
+The server provides the following endpoints:
+- /plugins: Lists all available Volatility plugins
+- /analyze/{plugin_name}: Analyzes memory dump with a specific plugin
+- /analyze: Analyzes memory dump with all available plugins
+Features:
+- Plugin-based architecture for extensible memory analysis
+- RESTful API interface
+- Error handling and async operations
+- Integration with FastMCP for microservice architecture
+@author: @Gaffx
+@version: 1.0.0
+"""
+
 import subprocess
 from typing import Dict, List, Any, Optional
 from abc import ABC, abstractmethod
-
+from fastapi import FastAPI, HTTPException
 from mcp.server.fastmcp import FastMCP
 
 
