@@ -116,16 +116,17 @@ class VolatilityAnalyzer:
         vol_bin = os.getenv('VOLATILITY_BIN')
         if not vol_bin:
             errors.append("VOLATILITY_BIN environment variable is not set")
-            return errors  
+            return errors  # Return early since we can't proceed without the binary
         
         if not os.path.exists(vol_bin):
             errors.append(f"Volatility executable not found at {vol_bin}")
-            return errors  
+            return errors  # Return early since we can't proceed without valid binary
             
         # Validate individual plugins
         for name, plugin in self.plugins.items():
             try:
                 if isinstance(plugin, WindowsPlugin):
+                    # No need to check vol_bin again, we already validated it
                     pass
             except Exception as e:
                 errors.append(f"Plugin {name} validation failed: {str(e)}")
@@ -153,9 +154,9 @@ The following errors were detected during startup:
 {}
 To resolve this issue:
 
-1. Set the VOLATILITY_BIN environment variable to point to your Volatility executable
+1. Set the VOLATILITY_BIN environment variable to point to your Volatility executable:
 2. Ensure the path points to a valid Volatility installation
-3. Restart the FASTAPI server
+3. Restart the server
 
 For more information, visit: https://volatility3.readthedocs.io/
 """.format("\n".join(f"  • {error}" for error in errors))
