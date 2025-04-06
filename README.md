@@ -1,4 +1,8 @@
+![](https://img.shields.io/badge/License-Apache%202.0-blue?style=plastic&logo=adobefonts)
 # Volatility MCP
+![image](https://github.com/user-attachments/assets/83cd61f9-1036-460a-b1e4-d281dd61eadf)
+
+
 
 ## Overview
 
@@ -53,6 +57,7 @@ show me the list of the processes in memory image x, or show me all the external
     ```
 4. Install Claude Desktop (see [Claude Desktop](https://claude.ai/download)
 5. To configure Claude Desktop as a volatility MCP client, navigate to Claude → Settings → Developer → Edit Config, locate the claude_desktop_config.json file, and insert the following configuration details
+6. Please note that `-i` option in the config.json file is used to specify the directory path of your memory image file.
 
    ```
        {
@@ -61,7 +66,7 @@ show me the list of the processes in memory image x, or show me all the external
             "command": "python",
             "args": [
               "/ABSOLUTE_PATH_TO_MCP-SERVER/vol_mcp_server.py", "-i",     
-              "/ABSOLUTE_PATH_TO_MEMORY_IMAGE/Challenge.raw"
+              "/ABSOLUTE_PATH_TO_MEMORY_IMAGE/<memory_image>"
             ]
           }
         }
@@ -75,7 +80,15 @@ Alternatively, update this file directly:
 
 1. Start the FastAPI server as described above.
 2. Connect a MCP client (e.g., Claude Desktop) to the FastAPI server.
-3. start asking question about the memory image such as show me the running processes,  create parent child relationship graph for process x, or show me all exeternal non RFC1918 connections. 
+3. Start the prompt by asking questions regarding the memory image in scope such as show me the running processes,  create tree relationship graph for process x, or show me all exeternal non RFC1918 connections.
+
+![image](https://github.com/user-attachments/assets/23f6fd4f-76b4-4255-a0a6-534ed3459bb3)
+![image](https://github.com/user-attachments/assets/e5cd74ae-72ff-4c5b-8bd8-fbeb13488a70)
+![image](https://github.com/user-attachments/assets/779707ef-4910-4503-b6b0-43f6c37075ef)
+![image](https://github.com/user-attachments/assets/668e9b91-463a-424f-a3ef-ee2baf44308d)
+
+
+
 
 
 ## Contributing
