@@ -87,9 +87,14 @@ Alternatively, update this file directly:
 ![image](https://github.com/user-attachments/assets/779707ef-4910-4503-b6b0-43f6c37075ef)
 ![image](https://github.com/user-attachments/assets/668e9b91-463a-424f-a3ef-ee2baf44308d)
 
+## Future Features and Enhancements
 
-
-
+*   **Yara Integration:** Implement functionality to dump a process from memory and scan it with Yara rules for malware analysis.
+*   **Multi-Image Analysis:** Enable the analysis of multiple memory images simultaneously to correlate events and identify patterns across different systems.
+*   **Adding more Volatility Plugins:** add more volatility plugins to expand the scope of memory analysis
+*   **GUI Enhancements:** Develop a user-friendly web interface for interactive memory analysis and visualization.
+*   **Automated Report Generation:** Automate the generation of detailed reports summarizing the findings of memory analysis.
+*   **Advanced Threat Detection:** Incorporate advanced techniques for detecting sophisticated threats and anomalies in memory.
 
 ## Contributing
 
@@ -100,4 +105,5 @@ Contributions are welcome! Please follow these steps to contribute:
 3. Commit your changes (`git commit -m 'Add some feature'`).
 4. Push to your branch (`git push origin feature/my-feature`).
 5. Open a pull request.
+
 
