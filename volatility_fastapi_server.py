@@ -1,19 +1,18 @@
 """
 Volatility Memory Analysis FastAPI Server
-This module implements a FastAPI server that provides RESTful endpoints for memory analysis
-using Volatility3 framework. It includes a plugin system for different types of memory analysis
-and supports Windows memory dumps.
-The server provides the following endpoints:
-- /plugins: Lists all available Volatility plugins
-- /analyze/{plugin_name}: Analyzes memory dump with a specific plugin
-- /analyze: Analyzes memory dump with all available plugins
+
+A FastAPI server providing RESTful endpoints for memory analysis using Volatility3 framework.
+
+Endpoints:
+    /plugins: Lists all available Volatility plugins
+    /analyze/{plugin_name}: Analyzes memory dump with a specific plugin
+    /analyze: Analyzes memory dump with all available plugins
+
 Features:
-- Plugin-based architecture for extensible memory analysis
-- RESTful API interface
-- Error handling and async operations
-- Integration with FastMCP for microservice architecture
-@author: @Gaffx
-@version: 1.0.0
+    - Plugin-based architecture for extensible memory analysis
+    - RESTful API interface
+    - Error handling and async operations
+    - Integration with FastMCP for microservice architecture
 """
 
 import subprocess
@@ -26,7 +25,13 @@ from mcp.server.fastmcp import FastMCP
 
 
 class VolatilityPlugin(ABC):
-    """Base class for Volatility plugins"""
+    """
+    Base class for Volatility plugins.
+    
+    Args:
+        name: Name of the plugin
+        description: Description of what the plugin does
+    """
     
     def __init__(self, name: str, description: str):
         self.name = name
@@ -34,11 +39,24 @@ class VolatilityPlugin(ABC):
     
     @abstractmethod
     def run(self, image_path: str) -> str:
-        """Run the plugin on the specified memory image"""
+        """
+        Run the plugin on the specified memory image.
+        
+        Args:
+            image_path: Path to the memory image file
+            
+        Returns:
+            str: Output from the plugin execution
+        """
         pass
     
     def get_info(self) -> Dict[str, str]:
-        """Get plugin information"""
+        """
+        Get plugin information.
+        
+        Returns:
+            Dict[str, str]: Dictionary containing plugin name and description
+        """
         return {
             "name": self.name,
             "description": self.description
@@ -46,14 +64,32 @@ class VolatilityPlugin(ABC):
 
 
 class WindowsPlugin(VolatilityPlugin):
-    """Windows-specific Volatility plugin"""
+    """
+    Windows-specific Volatility plugin.
+    
+    Args:
+        name: Name of the plugin
+        plugin_name: Name of the Volatility command to execute
+        description: Description of what the plugin does
+    """
     
     def __init__(self, name: str, plugin_name: str, description: str):
         super().__init__(name, description)
         self.plugin_name = plugin_name
     
     def run(self, image_path: str) -> str:
-        """Run the Windows plugin on the specified memory image"""
+        """
+        Run the Windows plugin on the specified memory image.
+        
+        Args:
+            image_path: Path to the memory image file
+            
+        Returns:
+            str: Output from the plugin execution
+            
+        Raises:
+            RuntimeError: If Volatility binary is not found or execution fails
+        """
         vol_bin = os.getenv('VOLATILITY_BIN')
         if not vol_bin:
             raise RuntimeError("VOLATILITY_BIN') environment variable is not set")
@@ -72,7 +108,11 @@ class WindowsPlugin(VolatilityPlugin):
 
 
 class VolatilityAnalyzer:
-    """Class to manage Volatility analysis"""
+    """
+    Class to manage Volatility analysis.
+    
+    Maintains a registry of plugins and handles their execution.
+    """
     
     def __init__(self):
         # Initialize the analyzer with an empty plugin registry and its type is Dict[str, VolatilityPlugin]
@@ -80,26 +120,64 @@ class VolatilityAnalyzer:
         self.plugins: Dict[str, VolatilityPlugin] = {}
     
     def register_plugin(self, plugin: VolatilityPlugin) -> None:
-        """Register a plugin with the analyzer"""
+        """
+        Register a plugin with the analyzer.
+        
+        Args:
+            plugin: Plugin instance to register
+        """
         self.plugins[plugin.name] = plugin
     
     def get_plugin(self, name: str) -> Optional[VolatilityPlugin]:
-        """Get a registered plugin by name"""
+        """
+        Get a registered plugin by name.
+        
+        Args:
+            name: Name of the plugin to retrieve
+            
+        Returns:
+            Optional[VolatilityPlugin]: The plugin if found, None otherwise
+        """
         return self.plugins.get(name)
     
     def list_plugins(self) -> List[Dict[str, str]]:
-        """List all registered plugins"""
+        """
+        List all registered plugins.
+        
+        Returns:
+            List[Dict[str, str]]: List of dictionaries containing plugin information
+        """
         return [plugin.get_info() for plugin in self.plugins.values()]
     
     def analyze(self, image_path: str, plugin_name: str) -> str:
-        """Run analysis using the specified plugin"""
+        """
+        Run analysis using the specified plugin.
+        
+        Args:
+            image_path: Path to the memory image file
+            plugin_name: Name of the plugin to use
+            
+        Returns:
+            str: Analysis results from the plugin
+            
+        Raises:
+            ValueError: If plugin is not found
+        """
         plugin = self.get_plugin(plugin_name)
         if not plugin:
             raise ValueError(f"Plugin {plugin_name} not found")
         return plugin.run(image_path)
     
     def analyze_all(self, image_path: str) -> Dict[str, str]:
-        """Run analysis using all registered plugins"""
+        """
+        Run analysis using all registered plugins.
+        
+        Args:
+            image_path: Path to the memory image file
+            
+        Returns:
+            Dict[str, str]: Dictionary containing analysis results from all plugins
+        """
         results = {}
         for name, plugin in self.plugins.items():
             try:
@@ -109,7 +187,12 @@ class VolatilityAnalyzer:
         return results
     
     def validate_plugins(self) -> List[str]:
-        """Validate all registered plugins and return any errors"""
+        """
+        Validate all registered plugins and return any errors.
+        
+        Returns:
+            List[str]: List of error messages, if any
+        """
         errors = []
         
         # Check VOLATILITY_BIN environment variable once
@@ -174,13 +257,30 @@ mcp = FastMCP("vol-mcp")
 
 @app.get("/plugins")
 async def list_plugins():
-    """Endpoint to list available plugins"""
+    """
+    Endpoint to list available plugins.
+    
+    Returns:
+        dict: Dictionary containing list of available plugins
+    """
     return {"plugins": analyzer.list_plugins()}
 
 
 @app.get("/analyze/{plugin_name}")
 async def analyze_with_plugin(plugin_name: str, image_path: str):
-    """Endpoint to analyze memory using a specific plugin"""
+    """
+    Endpoint to analyze memory using a specific plugin.
+    
+    Args:
+        plugin_name: Name of the plugin to use
+        image_path: Path to the memory image file
+        
+    Returns:
+        dict: Analysis results from the plugin
+        
+    Raises:
+        HTTPException: If plugin is not found or analysis fails
+    """
     try:
         plugin = analyzer.get_plugin(plugin_name)
         if not plugin:
@@ -193,7 +293,18 @@ async def analyze_with_plugin(plugin_name: str, image_path: str):
 
 @app.get("/analyze")
 async def analyze_memory(image_path: str):
-    """Endpoint to analyze memory using all plugins"""
+    """
+    Endpoint to analyze memory using all plugins.
+    
+    Args:
+        image_path: Path to the memory image file
+        
+    Returns:
+        dict: Dictionary containing analysis results from all plugins
+        
+    Raises:
+        HTTPException: If analysis fails
+    """
     try:
         results = analyzer.analyze_all(image_path)
         return results
