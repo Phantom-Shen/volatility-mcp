@@ -7,7 +7,7 @@ Your AI Assistant in Memory Forensics
 </h1>
 
 ## Overview
-Volatility MCP is a project that integrates Volatility 3, a memory forensics framework, with a Python FastAPI backend. This setup allows memory image analysis via the Model Context Protocol (MCP). The FastAPI backend exposes Volatility 3 plugins as RESTful APIs, enabling seamless integration with a web front end for interactive memory forensics analysis. MCP clients like Claude Desktop or custom web applications can consume these APIs to leverage Volatility plugins such as `pslist` and `netscan`.
+Volatility MCP seamlessly integrates Volatility 3's powerful memory analysis with FastAPI and the Model Context Protocol (MCP). Experience memory forensics without barriers as plugins like `pslist` and `netscan` become accessible through clean REST APIs, connecting memory artifacts directly to AI assistants and web applications
 
 ## Features
 * **Volatility 3 Integration:** Leverages the Volatility 3 framework for memory image analysis.
@@ -23,9 +23,9 @@ The project architecture consists of the following components:
 
 * **MCP Client:** MCP client like Claude Desktop that interacts with the FastAPI backend.
 * **FastAPI Server:** A Python-based server that exposes Volatility plugins as API endpoints.
-* **Volatility 3:** The memory forensics framework that performs the actual analysis.
+* **Volatility 3:** The memory forensics framework performing the analysis.
 
-This architecture allows users to analyze memory images through MCP clients such as Claude desktop. Users can use natural language prompts to perform memory forensics analysis such as
+This architecture allows users to analyze memory images through MCP clients like Claude Desktop. Users can use natural language prompts to perform memory forensics analysis such as
 show me the list of the processes in memory image x, or show me all the external connections made
 
 ## Getting Started
@@ -33,7 +33,7 @@ show me the list of the processes in memory image x, or show me all the external
 ### Prerequisites
 
 * Python 3.7+ installed on your system
-* Volatility 3 installed (see [Volatility 3 Installation Guide](https://github.com/volatilityfoundation/volatility3?tab=readme-ov-file#installing)) and added to your env path variable
+* Volatility 3 binary installed (see [Volatility 3 Installation Guide](https://github.com/volatilityfoundation/volatility3?tab=readme-ov-file#installing)) and added to your env path called **VOLATILITY_BIN**
 
 ### Installation
 
@@ -53,11 +53,11 @@ show me the list of the processes in memory image x, or show me all the external
 3. Start the FastAPI server to expose Volatility 3 APIs:
 
     ```
-    uvicorn volatility_fastapi_server:app --port 8000 
+    uvicorn volatility_fastapi_server:app 
     ```
 4. Install Claude Desktop (see [Claude Desktop](https://claude.ai/download)
 5. To configure Claude Desktop as a volatility MCP client, navigate to Claude → Settings → Developer → Edit Config, locate the claude_desktop_config.json file, and insert the following configuration details
-6. Please note that `-i` option in the config.json file is used to specify the directory path of your memory image file.
+6. Please note that the `-i` option in the config.json file specifies the directory path of your memory image file.
 
    ```
        {
@@ -79,8 +79,8 @@ Alternatively, update this file directly:
 ### Usage
 
 1. Start the FastAPI server as described above.
-2. Connect a MCP client (e.g., Claude Desktop) to the FastAPI server.
-3. Start the prompt by asking questions regarding the memory image in scope such as show me the running processes,  create tree relationship graph for process x, or show me all exeternal non RFC1918 connections.
+2. Connect an MCP client (e.g., Claude Desktop) to the FastAPI server.
+3. Start the prompt by asking questions regarding the memory image in scope, such as showing me the running processes, creating a tree relationship graph for process x, or showing me all external RFC1918 connections.
 
 ![image](https://github.com/user-attachments/assets/23f6fd4f-76b4-4255-a0a6-534ed3459bb3)
 ![image](https://github.com/user-attachments/assets/e5cd74ae-72ff-4c5b-8bd8-fbeb13488a70)
