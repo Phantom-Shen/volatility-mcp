@@ -89,6 +89,7 @@ Alternatively, update this file directly:
 
 ## Future Features and Enhancements
 
+*  **Native Volatility Python Integration:** Incorporate Volatility Python SDK directly in the code base as opposed to subprocess volatility binary
 *   **Yara Integration:** Implement functionality to dump a process from memory and scan it with Yara rules for malware analysis.
 *   **Multi-Image Analysis:** Enable the analysis of multiple memory images simultaneously to correlate events and identify patterns across different systems.
 *   **Adding more Volatility Plugins:** add more volatility plugins to expand the scope of memory analysis
