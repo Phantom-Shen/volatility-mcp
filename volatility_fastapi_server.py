@@ -17,9 +17,11 @@ Features:
 """
 
 import subprocess
+import os
 from typing import Dict, List, Any, Optional
 from abc import ABC, abstractmethod
 from fastapi import FastAPI, HTTPException
+from contextlib import asynccontextmanager
 from mcp.server.fastmcp import FastMCP
 
 
@@ -52,8 +54,15 @@ class WindowsPlugin(VolatilityPlugin):
     
     def run(self, image_path: str) -> str:
         """Run the Windows plugin on the specified memory image"""
+        vol_bin = os.getenv('VOLATILITY_BIN')
+        if not vol_bin:
+            raise RuntimeError("VOLATILITY_BIN') environment variable is not set")
+            
+        if not os.path.exists(vol_bin):
+            raise RuntimeError(f"Volatility executable not found at {vol_bin}")
+            
         result = subprocess.run(
-            ['vol.exe', '-f', image_path, self.plugin_name],
+            [vol_bin, '-f', image_path, self.plugin_name],
             capture_output=True,
             text=True
         )
@@ -98,6 +107,30 @@ class VolatilityAnalyzer:
             except Exception as e:
                 results[name] = f"Error: {str(e)}"
         return results
+    
+    def validate_plugins(self) -> List[str]:
+        """Validate all registered plugins and return any errors"""
+        errors = []
+        
+        # Check VOLATILITY_BIN environment variable once
+        vol_bin = os.getenv('VOLATILITY_BIN')
+        if not vol_bin:
+            errors.append("VOLATILITY_BIN environment variable is not set")
+            return errors  
+        
+        if not os.path.exists(vol_bin):
+            errors.append(f"Volatility executable not found at {vol_bin}")
+            return errors  
+            
+        # Validate individual plugins
+        for name, plugin in self.plugins.items():
+            try:
+                if isinstance(plugin, WindowsPlugin):
+                    pass
+            except Exception as e:
+                errors.append(f"Plugin {name} validation failed: {str(e)}")
+        
+        return errors
 
 
 # Initialize the analyzer and register plugins
@@ -106,10 +139,36 @@ analyzer.register_plugin(WindowsPlugin("process", "windows.pslist.PsList", "Get 
 analyzer.register_plugin(WindowsPlugin("connections", "windows.netscan.NetScan", "Get network connection information from memory image"))
 analyzer.register_plugin(WindowsPlugin("cmdline", "windows.cmdline.CmdLine", "Get command line information from memory image"))
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Validate plugins on startup
+    errors = analyzer.validate_plugins()
+    if errors:
+        error_message = """
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                              Configuration Error                               ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+The following errors were detected during startup:
+{}
+To resolve this issue:
+
+1. Set the VOLATILITY_BIN environment variable to point to your Volatility executable
+2. Ensure the path points to a valid Volatility installation
+3. Restart the FASTAPI server
+
+For more information, visit: https://volatility3.readthedocs.io/
+""".format("\n".join(f"  • {error}" for error in errors))
+        
+        raise RuntimeError(error_message)
+    yield
+
+# Initialize FastAPI with lifespan
+app = FastAPI(lifespan=lifespan)
+
 # Initialize FastAPI and MCP
 vol_url = "http://localhost:8000/analyze"
 mcp = FastMCP("vol-mcp")
-app = FastAPI()
 
 
 @app.get("/plugins")
