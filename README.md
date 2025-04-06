@@ -8,7 +8,7 @@ Volatility MCP is a project that integrates Volatility 3, a memory forensics fra
 
 * **Volatility 3 Integration:** Leverages the Volatility 3 framework for memory image analysis.
 * **FastAPI Backend:** Provides RESTful APIs to interact with Volatility plugins.
-* **Web Front End Support:** Designed to connect with a web-based front end for interactive analysis.
+* **Web Front End Support (future feature):** Designed to connect with a web-based front end for interactive analysis.
 * **Model Context Protocol (MCP):** Enables standardized communication with MCP clients like Claude Desktop.
 * **Plugin Support:** Supports various Volatility plugins, including `pslist` for process listing and `netscan` for network connection analysis.
 
@@ -52,25 +52,30 @@ show me the list of the processes in memory image x, or show me all the external
     uvicorn volatility_fastapi_server:app --port 8000 
     ```
 4. Install Claude Desktop (see [Claude Desktop](https://claude.ai/download)
-5. To configure Claude Desktop as a volatility MCP client, navigate to Claude → Settings → Developer → Edit Config, locate the claude_desktop_config.json file, and insert the specified configuration details.
+5. To configure Claude Desktop as a volatility MCP client, navigate to Claude → Settings → Developer → Edit Config, locate the claude_desktop_config.json file, and insert the following configuration details
 
+   ```
+       {
+        "mcpServers": {
+          "vol": {
+            "command": "python",
+            "args": [
+              "/ABSOLUTE_PATH_TO_MCP-SERVER/vol_mcp_server.py", "-i",     
+              "/ABSOLUTE_PATH_TO_MEMORY_IMAGE/Challenge.raw"
+            ]
+          }
+        }
+    }
+   ```
+Alternatively, update this file directly:
 
-### Configuration
-
-The FastAPI server can be configured  or by modifying the configuration file (`config.py`). Key configuration options include:
-
-* `HOST`: The host address for the FastAPI server (default: `127.0.0.1`).
-* `PORT`: The port for the FastAPI server (default: `8000`).
+`/Users/YOUR_USER/Library/Application Support/Claude/claude_desktop_config.json`
 
 ### Usage
 
 1. Start the FastAPI server as described above.
 2. Connect a MCP client (e.g., Claude Desktop) to the FastAPI server.
-3. start asking question about the memory image
-
-#### Example API Request
-
-To run the `pslist` plugin via an API request:
+3. start asking question about the memory image such as show me the running processes,  create parent child relationship graph for process x, or show me all exeternal non RFC1918 connections. 
 
 
 ## Contributing
