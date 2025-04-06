@@ -29,7 +29,7 @@ show me the list of the processes in memory image x, or show me all the external
 ### Prerequisites
 
 * Python 3.7+ installed on your system
-* Volatility 3 installed (see [Volatility 3 Installation Guide](https://github.com/volatilityfoundation/volatility3?tab=readme-ov-file#installing))
+* Volatility 3 installed (see [Volatility 3 Installation Guide](https://github.com/volatilityfoundation/volatility3?tab=readme-ov-file#installing)) and added to your env path variable
 
 ### Installation
 
