@@ -1,5 +1,3 @@
-[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/gaffx-volatility-mcp-badge.png)](https://mseep.ai/app/gaffx-volatility-mcp)
-
 ![](https://img.shields.io/badge/License-Apache%202.0-blue?style=plastic&logo=adobefonts)
 <p align="center">
 <img src="assets/logo.png" height="300">
@@ -108,5 +106,7 @@ Contributions are welcome! Please follow these steps to contribute:
 3. Commit your changes (`git commit -m 'Add some feature'`).
 4. Push to your branch (`git push origin feature/my-feature`).
 5. Open a pull request.
+
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/gaffx-volatility-mcp-badge.png)](https://mseep.ai/app/gaffx-volatility-mcp)
 
 
