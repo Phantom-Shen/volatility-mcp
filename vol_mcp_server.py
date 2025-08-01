@@ -49,7 +49,10 @@ class VolatilityMCP:
         self.mcp.tool()(self.get_processes)
         self.mcp.tool()(self.get_connections)
         self.mcp.tool()(self.get_cmdline)
-    
+        self.mcp.tool()(self.get_hashdump)
+        self.mcp.tool()(self.get_cachedump)
+        self.mcp.tool()(self.get_lsadump)
+        
     def set_memory_image(self, image_path: str) -> None:
         """
         Set the memory image path to use for analysis.
@@ -82,7 +85,7 @@ class VolatilityMCP:
         """
         return HttpClient.http_get(
             self.vol_url, 
-            "analyze/connection", 
+            "analyze/connections", 
             params={"image_path": self.memory_image_path}
         )
     
@@ -96,6 +99,45 @@ class VolatilityMCP:
         return HttpClient.http_get(
             self.vol_url, 
             "analyze/cmdline", 
+            params={"image_path": self.memory_image_path}
+        )
+    
+    def get_hashdump(self) -> List[str]:
+        """
+        Retrieve password hashes from the volatility analysis server.
+
+        Returns:
+            List[str]: A list of password hash strings extracted from the memory image.
+        """
+        return HttpClient.http_get(
+            self.vol_url,
+            "analyze/hashdump",
+            params={"image_path": self.memory_image_path}
+        )
+    
+    def get_cachedump(self) -> List[str]:
+        """
+        Retrieve cached domain credentials from the volatility analysis server.
+
+        Returns:
+            List[str]: A list of cached domain credential strings extracted from the memory image.
+        """
+        return HttpClient.http_get(
+            self.vol_url,
+            "analyze/cachedump",
+            params={"image_path": self.memory_image_path}
+        )
+
+    def get_lsadump(self) -> List[str]:
+        """
+        Retrieve LSA secrets from the volatility analysis server.
+
+        Returns:
+            List[str]: A list of LSA secret strings extracted from the memory image.
+        """
+        return HttpClient.http_get(
+            self.vol_url,
+            "analyze/lsadump",
             params={"image_path": self.memory_image_path}
         )
     

@@ -222,6 +222,9 @@ analyzer = VolatilityAnalyzer()
 analyzer.register_plugin(WindowsPlugin("process", "windows.pslist.PsList", "Get process information from memory image"))
 analyzer.register_plugin(WindowsPlugin("connections", "windows.netscan.NetScan", "Get network connection information from memory image"))
 analyzer.register_plugin(WindowsPlugin("cmdline", "windows.cmdline.CmdLine", "Get command line information from memory image"))
+analyzer.register_plugin(WindowsPlugin("hashdump", "windows.hashdump.Hashdump", "Dump password hashes from memory image"))
+analyzer.register_plugin(WindowsPlugin("cachedump", "windows.cachedump.Cachedump", "Dump cached domain credentials from memory image"))
+analyzer.register_plugin(WindowsPlugin("lsadump", "windows.lsadump.Lsadump", "Dump LSA secrets from memory image"))
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
